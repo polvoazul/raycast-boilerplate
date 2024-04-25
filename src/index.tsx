@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Detail, showToast } from "@raycast/api";
+import { Action, ActionPanel, Detail, getPreferenceValues, openCommandPreferences, showToast } from "@raycast/api";
 import { useState } from "react";
 
 type IVariable = {value: string; key: KEYS; on:boolean; toggle_key: TOGGLE_KEYS}
@@ -35,8 +35,17 @@ const copy_template = (s: IState) => {
 
 }
 
+
   export default function Command() {
-  const [vars, set_vars] = useState(INIT_STATE)
+  const prefs = getPreferenceValues<{variables: string}>();
+  let init_state = INIT_STATE
+  if(prefs.variables) {
+    const fs = require('node:fs');
+    let content = fs.readFileSync(prefs.variables, 'utf8')
+    const variables = JSON.parse(content).variables as IVariable[];
+    init_state = variables;
+  }
+  const [vars, set_vars] = useState(init_state)
 
   function toggle(key: KEYS) {
     set_vars(vars.map((v) => v.key === key ? {...v, on: !v.on} : v));
@@ -44,7 +53,6 @@ const copy_template = (s: IState) => {
     showToast({ title: `Toggle ${key}`, message: is_on ? `${key} is currently shown` : `${key} is currently hidden` });
   }
   const actions = vars.map(
-    // @ts-ignore
     (v) => <Action title={`Toggle ${v.key}`} shortcut={{modifiers: [], key: v.toggle_key}} onAction={() => toggle(v.key)} />
   );
 
@@ -54,6 +62,7 @@ const copy_template = (s: IState) => {
         <ActionPanel title="Actions">
           <Action.CopyToClipboard content={copy_template(vars)} />
           {...actions}
+          <Action shortcut={{modifiers: ["cmd", "shift"], key: ","}} title="Open Extension Preferences" onAction={openCommandPreferences} />
         </ActionPanel>
       }
     />

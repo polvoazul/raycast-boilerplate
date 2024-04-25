@@ -13,13 +13,14 @@
     {
       "name": "index",
       "title": "Boilerplater",
-      "description": "Template with a plain detail view",
+      "description": "Prints a template of previously defined variables",
       "mode": "view"
     }
   ],
   "preferences": [{
     "name": "variables",
-    "description": "point to a file with variables in .json format. Each variable must have {toggle_key (single shortcut key), key (name to be printed), value, on (default)}",
+    "title": "Variables File",
+    "description": "Please point to a file with variables in .json format.\n\nIt should contain a top level key 'variables: [...]'.\n\nEach variable must define {toggle_key (single shortcut key), key (name to be printed), value, on (default)}",
     "required": false,
     "type": "file"
   }],

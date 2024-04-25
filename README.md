@@ -1,3 +1,3 @@
 # Boilerplater
 
-Extension for raycast.com
+An extension for [raycast](raycast.com)
