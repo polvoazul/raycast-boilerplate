@@ -16,7 +16,7 @@ const INIT_STATE: IVariable[] = [
 type IState = typeof INIT_STATE
 
 function format_on(on: boolean) {
-  return on ? '**' : ''
+  return on ? '**' : '_'
 }
 
 const template = (s: IState) => {
